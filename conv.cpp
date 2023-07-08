@@ -43,15 +43,25 @@ void EntryConv(TwoD_IPT X[num_chnl_ip],  TwoD_wtT W[num_chnl_op], TwoD_outT Z[nu
 		//printf("readImgRow %d", readImgRow);		
 		for (size_t i = 0; i < num_chnl_ip; i++)
 		{
+			for(size_t row=0; row < KernelSize; row++){
+				for(size_t col=0; col<inputWidth; col++){
+					x_row[i].tileData[row][col] = X[i].X_c[row+readImgRow][col];
+				}
+			}
 			//Local BRAM at time t
-			memcpy(x_row[i].tileData, X[i].X_c + readImgRow, rowSize );
+			//memcpy(x_row[i].tileData, X[i].X_c + readImgRow, rowSize );
 		}
 		for (size_t i = 0; i < num_chnl_op; i++)
 		{
 
 			for (size_t j = 0; j < num_chnl_ip; j++)
 			{
-				memcpy( w_set[0].ith_filter[j].W_c, W[i].ith_filter[j].W_c,\
+				for(size_t row=0; row<KernelSize; row++){
+					for(size_t col=0; col<KernelSize; col++){
+						w_set[0].ith_filter[j].W_c[row][col] = W[i].ith_filter[j].W_c[row][col];
+					}
+				}
+				//memcpy( w_set[0].ith_filter[j].W_c, W[i].ith_filter[j].W_c,\
 					 KernelSize*KernelSize*sizeof(float) );
 			}
 			float *currZ_bigTile = conv2d_hls(x_row, w_set[0].ith_filter, Z , b[i]);
