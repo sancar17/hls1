@@ -2,7 +2,6 @@
 
 float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  float b )
 {
-	float z_bigTile_per_Opchnl[outDim] ={0};
 	unsigned short int numTilesCols = inputWidth - KernelSize +1;
 
 	for (unsigned short int tileCol = 0; tileCol < numTilesCols; tileCol++)
@@ -13,7 +12,7 @@ float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  f
     		{
         		for (size_t q = tileCol; q < (tileCol+KernelSize); q++)
         		{
-					z_bigTile_per_Opchnl[tileCol]  += x[c].tileData[p][q] * Kernel_i[c].W_c[p][q-tileCol];
+					z[tileCol]  += x[c].tileData[p][q] * Kernel_i[c].W_c[p][q-tileCol];
 				}
 			}
 		}
@@ -21,10 +20,10 @@ float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  f
 
 	for (size_t j = 0; j < outDim; j++)
 	{
-		z_bigTile_per_Opchnl[j] += b;
-		printf("z_bigTile_per_Opchnl: %f\n", z_bigTile_per_Opchnl[j]);
+		z[j] += b;
+		//printf("z_bigTile_per_Opchnl: %f\n", z_bigTile_per_Opchnl[j]);
 	}
-	return z_bigTile_per_Opchnl;
+	return z;
 
 }
 
