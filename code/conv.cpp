@@ -2,6 +2,10 @@
 
 void conv2d( TwoD_IPT X[num_chnl_ip], TwoD_wtT W[num_chnl_op], TwoD_outT Z[num_chnl_op], float b[num_chnl_op] )
 {
+
+
+
+	
     TwoD_wtT filters[num_chnl_op] = {0};
     int Zc = 0, Zm = 0, Zn = 0;
 
