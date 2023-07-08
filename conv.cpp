@@ -5,7 +5,7 @@ float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  f
 	float z_bigTile_per_Opchnl[outDim] ={0};
 	unsigned short int numTilesCols = inputWidth - KernelSize +1;
 
-	for (unsigned short int tileCol = 0; tileCol < numTilesCols; tileCol++) 
+	for (unsigned short int tileCol = 0; tileCol < numTilesCols; tileCol++)
 	{
 		for (size_t c = 0; c < num_chnl_ip; c++)
 		{
@@ -28,11 +28,19 @@ float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  f
 
 }
 
-  
+
 
 
 void EntryConv(TwoD_IPT X[num_chnl_ip],  TwoD_wtT W[num_chnl_op], TwoD_outT Z[num_chnl_op],  float b[num_chnl_op] )
 {
+
+	#pragma HLS interface m_axi port=X,W depth=10
+	#pragma HLS interface m_axi port=Z depth=10
+	#pragma HLS interface s_axilite port=return
+	#pragma HLS interface s_axilite port=X,W
+	#pragma HLS interface s_axilite port=Z
+
+
 	TwoDTile_IPT x_row[num_chnl_ip];
 	TwoD_wtT w_set[num_chnl_op];
 
@@ -40,7 +48,7 @@ void EntryConv(TwoD_IPT X[num_chnl_ip],  TwoD_wtT W[num_chnl_op], TwoD_outT Z[nu
 
 	for (size_t readImgRow = 0; readImgRow < (inputWidth -KernelSize +1); readImgRow++)
 	{
-		//printf("readImgRow %d", readImgRow);		
+		//printf("readImgRow %d", readImgRow);
 		for (size_t i = 0; i < num_chnl_ip; i++)
 		{
 			for(size_t row=0; row < KernelSize; row++){
@@ -65,7 +73,7 @@ void EntryConv(TwoD_IPT X[num_chnl_ip],  TwoD_wtT W[num_chnl_op], TwoD_outT Z[nu
 					 KernelSize*KernelSize*sizeof(float) );
 			}
 			float *currZ_bigTile = conv2d_hls(x_row, w_set[0].ith_filter, Z , b[i]);
-			//TODO: send result to processor here	
+			//TODO: send result to processor here
 		}
 	}
 }
