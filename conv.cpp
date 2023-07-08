@@ -1,6 +1,6 @@
 #include "conv.h"
 
-float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  float b )
+float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], float *z,  float b )
 {
 	unsigned short int numTilesCols = inputWidth - KernelSize +1;
 
@@ -21,7 +21,7 @@ float* conv2d_hls( TwoDTile_IPT x[],  TwoD_filterT Kernel_i[], TwoD_outT z[],  f
 	for (size_t j = 0; j < outDim; j++)
 	{
 		z[j] += b;
-		//printf("z_bigTile_per_Opchnl: %f\n", z_bigTile_per_Opchnl[j]);
+		printf("z_bigTile_per_Opchnl: %f\n", z[j]);
 	}
 	return z;
 
@@ -71,7 +71,8 @@ void EntryConv(TwoD_IPT X[num_chnl_ip],  TwoD_wtT W[num_chnl_op], TwoD_outT Z[nu
 				//memcpy( w_set[0].ith_filter[j].W_c, W[i].ith_filter[j].W_c,\
 					 KernelSize*KernelSize*sizeof(float) );
 			}
-			float *currZ_bigTile = conv2d_hls(x_row, w_set[0].ith_filter, Z , b[i]);
+			float currZ_bigTile[outDim] = {0};
+			float *output = conv2d_hls(x_row, w_set[0].ith_filter, currZ_bigTile , b[i]);
 			//TODO: send result to processor here
 		}
 	}
