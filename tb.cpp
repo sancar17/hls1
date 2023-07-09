@@ -58,21 +58,21 @@ float filter22[4][4] =  {{ 0.1024, -0.1539, -0.0587,  0.0820},
                          { 0.1598, -0.1367, -0.1263, -0.1219},
                          {-0.0061,  0.0651, -0.1176,  0.1488},
                          { 0.0541,  0.1236, -0.0738,  0.0719}};
-    
-    
+
+
     float filter31[4][4] =    {{-0.0056,  0.0497, -0.1183, -0.1584},
           {-0.1657,  0.1138,  0.0189,  0.0983},
           { 0.1626, -0.0770,  0.0636, -0.0190},
           { 0.0865,  0.1564, -0.0294, -0.0549}};
 
-    
-    
+
+
     float filter32[4][4] =  {{-0.1090, -0.0785, -0.0962, -0.0180},
           { 0.1006, -0.1592, -0.0006,  0.0779},
           { 0.1444, -0.0049, -0.0058,  0.1632},
           {-0.0040,  0.0338, -0.0396, -0.0982}};
 
- 
+
 
 float b[3] = {0.0517, -0.0497, -0.1375} ;
 
@@ -103,17 +103,17 @@ int main(){
 	TwoD_outT *ref = new TwoD_outT[ num_chnl_op* ntests];
 	TwoD_IPT *x = new TwoD_IPT[ num_chnl_ip* ntests];
 	TwoD_wtT *w = new TwoD_wtT[num_chnl_op* ntests];
-	float b_true[num_chnl_op] = {0}; 
-    
-    
+	float b_true[num_chnl_op] = {0};
+
+
 
         memcpy( x[0].X_c, X_c1, sizeof(X_c1));
         memcpy( x[1].X_c, X_c2, sizeof(X_c2));
 
         memcpy( w[0].ith_filter[0].W_c, filter11, sizeof(filter11));
-        
+
         memcpy( w[0].ith_filter[1].W_c, filter12, sizeof(filter12));
-        
+
         memcpy( w[1].ith_filter[0].W_c, filter21, sizeof(filter21));
         memcpy( w[1].ith_filter[1].W_c, filter22, sizeof(filter22));
 
@@ -129,7 +129,7 @@ int main(){
 	//printf("starting entryCOnv");
 	EntryConv(x , w , z, b_true);
 	int i = 0;
-	#if 0 
+	#if 0
 	for(int n =0; n < num_chnl_op ; n++){
         for (size_t i = 0; i < outDim; i++)
         {
