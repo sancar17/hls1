@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <cstring>
 #define inputWidth  16//6
-#define KernelSize 3//4
+#define KernelSize  3//4
 #define num_chnl_op 384//3
 #define num_chnl_ip 384//2
-#define NumKernels 384//3
+#define NumKernels  384//3
 #define outDim (inputWidth-KernelSize+1)
 
 
